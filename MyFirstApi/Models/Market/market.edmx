@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="marketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Modeloes">
+          <Key>
+            <PropertyRef Name="MyProperty" />
+          </Key>
+          <Property Name="MyProperty" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Perfils">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Compañia" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Marca" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Modelo" Type="int" Nullable="false" />
+          <Property Name="User" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="45" Nullable="false" />
+          <Property Name="First_name" Type="nvarchar" MaxLength="45" />
+          <Property Name="Last_name" Type="nvarchar" MaxLength="45" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Tel" Type="int" Nullable="false" />
+          <Property Name="Rol" Type="int" Nullable="false" />
+          <Property Name="User_image" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty">
+          <End Role="Modeloes" Type="Self.Modeloes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Perfils" Type="Self.Perfils" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modeloes">
+              <PropertyRef Name="MyProperty" />
+            </Principal>
+            <Dependent Role="Perfils">
+              <PropertyRef Name="Modelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Perfils_dbo_Users_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Perfils" Type="Self.Perfils" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Perfils">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="marketModelStoreContainer">
+          <EntitySet Name="Modeloes" EntityType="Self.Modeloes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Perfils" EntityType="Self.Perfils" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty" Association="Self.FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty">
+            <End Role="Modeloes" EntitySet="Modeloes" />
+            <End Role="Perfils" EntitySet="Perfils" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Perfils_dbo_Users_User" Association="Self.FK_dbo_Perfils_dbo_Users_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Perfils" EntitySet="Perfils" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="marketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Modeloes">
+          <Key>
+            <PropertyRef Name="MyProperty" />
+          </Key>
+          <Property Name="MyProperty" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Perfils" Relationship="Self.FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty" FromRole="Modeloes" ToRole="Perfils" />
+        </EntityType>
+        <EntityType Name="Perfils">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Compañia" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Marca" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Modelo" Type="Int32" Nullable="false" />
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Modeloes" Relationship="Self.FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty" FromRole="Perfils" ToRole="Modeloes" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_dbo_Perfils_dbo_Users_User" FromRole="Perfils" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="45" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="First_name" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="Last_name" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tel" Type="Int32" Nullable="false" />
+          <Property Name="Rol" Type="Int32" Nullable="false" />
+          <Property Name="User_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Perfils" Relationship="Self.FK_dbo_Perfils_dbo_Users_User" FromRole="Users" ToRole="Perfils" />
+        </EntityType>
+        <Association Name="FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty">
+          <End Role="Modeloes" Type="Self.Modeloes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Perfils" Type="Self.Perfils" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modeloes">
+              <PropertyRef Name="MyProperty" />
+            </Principal>
+            <Dependent Role="Perfils">
+              <PropertyRef Name="Modelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Perfils_dbo_Users_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Perfils" Type="Self.Perfils" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Perfils">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="marketEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Modeloes" EntityType="Self.Modeloes" />
+          <EntitySet Name="Perfils" EntityType="Self.Perfils" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty" Association="Self.FK_dbo_Perfils_dbo_Modeloes_Modelo_MyProperty">
+            <End Role="Modeloes" EntitySet="Modeloes" />
+            <End Role="Perfils" EntitySet="Perfils" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Perfils_dbo_Users_User" Association="Self.FK_dbo_Perfils_dbo_Users_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Perfils" EntitySet="Perfils" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="marketModelStoreContainer" CdmEntityContainer="marketEntities">
+          <EntitySetMapping Name="Modeloes">
+            <EntityTypeMapping TypeName="marketModel.Modeloes">
+              <MappingFragment StoreEntitySet="Modeloes">
+                <ScalarProperty Name="MyProperty" ColumnName="MyProperty" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perfils">
+            <EntityTypeMapping TypeName="marketModel.Perfils">
+              <MappingFragment StoreEntitySet="Perfils">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Compañia" ColumnName="Compañia" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Modelo" ColumnName="Modelo" />
+                <ScalarProperty Name="User" ColumnName="User" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="marketModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="First_name" ColumnName="First_name" />
+                <ScalarProperty Name="Last_name" ColumnName="Last_name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="User_image" ColumnName="User_image" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ConfirmPassword" ColumnName="ConfirmPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
